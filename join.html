@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>사진보드 앨범 초대</title>
+<style>
+:root{--bg:#F7F6FB;--card:#fff;--ink:#1E1B2E;--sub:#5B5770;--c:#7B61FF;--soft:#F0ECFF}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,'Noto Sans KR',sans-serif}
+.w{max-width:460px;margin:0 auto;padding:48px 20px;text-align:center}
+h1{font-size:26px;margin:0 0 8px}p{color:var(--sub);line-height:1.6}
+.btn{display:block;padding:17px;border-radius:16px;background:var(--c);color:#fff;font-size:18px;font-weight:700;text-decoration:none;margin:22px 0 10px}
+.b2{background:var(--soft);color:var(--c);font-size:16px}
+.code{font-family:monospace;color:var(--ink);word-break:break-all}
+</style></head><body><div class="w">
+<h1>📷 앨범에 초대받았어요</h1>
+<p>사진보드 앱에서 친구와 같이 쓰는 앨범이 열려요.</p>
+<a class="btn" id="open" href="#">앱에서 열기</a>
+<a class="btn b2" id="get" href="./">앱이 없어요 · 설치하기</a>
+<p style="font-size:13px">초대 코드 <span class="code" id="code"></span></p>
+</div>
+<script>
+var c=(new URLSearchParams(location.search).get('c')||location.hash.slice(1)||'').replace(/[^\w-]/g,'');
+document.getElementById('code').textContent=c;
+var setup='./?c='+c;
+document.getElementById('get').href=setup;
+var it='intent://join/'+c+'#Intent;scheme=photoboard;package=com.photoboard.app;S.browser_fallback_url='+encodeURIComponent(new URL(setup,location.href).href)+';end';
+document.getElementById('open').href=it;
+/* 2026-10-13 '초대받으면 바로 들어가게' — 카톡 안 브라우저는 앱 열기(intent)를 막아서 크롬으로 다시 연다 */
+var ua=navigator.userAgent;
+if(/KAKAOTALK/i.test(ua)&&/android/i.test(ua)&&c&&!/ext=1/.test(location.search)){
+  location.href='kakaotalk://web/openExternal?url='+encodeURIComponent(location.href.split('#')[0]+(location.search?'&':'?')+'ext=1');
+}else if(/android/i.test(ua)&&c) setTimeout(function(){location.href=it;},300);
+/* 앱이 링크로 안 열려도 — 코드를 복사해 두면 앱 [초대받은 앨범 들어가기] 가 바로 넣고 들어간다 */
+function keep(){try{navigator.clipboard&&navigator.clipboard.writeText('pbjoin:'+c);}catch(e){}}
+document.getElementById('open').addEventListener('click',keep);
+document.getElementById('get').addEventListener('click',keep);
+</script></body></html>

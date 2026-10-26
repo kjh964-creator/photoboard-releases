@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>사진보드 설치</title>
+<style>
+:root{--bg:#F7F6FB;--card:#fff;--ink:#1E1B2E;--sub:#5B5770;--c:#7B61FF;--soft:#F0ECFF}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,'Noto Sans KR',sans-serif}
+.w{max-width:460px;margin:0 auto;padding:40px 20px}
+h1{font-size:28px;margin:0 0 6px}p{color:var(--sub);line-height:1.6;margin:0 0 14px}
+.btn{display:block;text-align:center;padding:17px;border-radius:16px;background:var(--c);color:#fff;font-size:18px;font-weight:700;text-decoration:none;margin:18px 0 10px}
+.b2{background:var(--soft);color:var(--c)}
+.card{background:var(--card);border-radius:16px;padding:16px 18px;margin-top:18px;font-size:14.5px;line-height:1.7;color:var(--sub)}
+.code{font-family:monospace;font-size:16px;color:var(--ink);word-break:break-all}
+</style></head><body><div class="w">
+<h1>📷 사진보드</h1>
+<p>여행 · 일상 사진을 앨범으로 엮고, 친구와 같이 쓰는 앱이에요.</p>
+<a class="btn" id="apk" href="https://raw.githubusercontent.com/kjh964-creator/photoboard-releases/main/photoboard.apk">최신 버전 받기 (안드로이드)</a>
+<div id="join" class="card" style="display:none">초대받은 앨범 코드<br><span class="code" id="code"></span><br>
+설치하고 이 페이지로 돌아와 아래 단추를 누르거나, 앱에서 [+ 새 앨범] → [초대받은 앨범 들어가기] 에 코드를 넣으세요.
+<a class="btn b2" id="open" href="#">앱에서 앨범 열기</a></div>
+<div class="card">설치하는 법<br>1) 위 단추로 받기 → 다 받으면 열기<br>2) "출처를 알 수 없는 앱" 이 뜨면 [설정] → [이 출처 허용] → 뒤로 → [설치]<br>3) 이미 깔려 있으면 덮어 설치돼요(앨범은 그대로)</div>
+</div>
+<script>
+var c=(new URLSearchParams(location.search).get('c')||'').replace(/[^\w-]/g,'');
+if(c){document.getElementById('join').style.display='block';document.getElementById('code').textContent=c;
+document.getElementById('open').href='intent://join/'+c+'#Intent;scheme=photoboard;package=com.photoboard.app;end';
+var keep=function(){try{navigator.clipboard&&navigator.clipboard.writeText('pbjoin:'+c);}catch(e){}};
+document.getElementById('open').addEventListener('click',keep);document.getElementById('apk').addEventListener('click',keep);}
+</script></body></html>
